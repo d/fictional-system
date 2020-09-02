@@ -1,0 +1,16 @@
+resources:
+  - name: src
+    type: git
+    source:
+      uri: https://github.com/d/fictional-system
+      branch: concourse
+
+jobs:
+  - name: build-and-push
+    plan:
+      - get: src
+      - task: build
+        privileged: true
+        file: src/ci/build.yml
+        input_mapping:
+          context: src
