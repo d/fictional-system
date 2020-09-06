@@ -14,7 +14,7 @@ on:
   pull_request:
 
 env:
-  IMAGE_NAME: clang-format
+  IMAGE_NAME: clang-toolchain
 
 jobs:
   # Run tests.
