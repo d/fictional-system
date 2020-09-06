@@ -25,6 +25,10 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - run: docker pull ubuntu:focal
+
+      - uses: satackey/action-docker-layer-caching@v0.0.8
+
       - name: Run tests
         run: docker build . --target test --file Dockerfile
 
@@ -39,6 +43,10 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+
+      - run: docker pull ubuntu:focal
+
+      - uses: satackey/action-docker-layer-caching@v0.0.8
 
       - name: Build image
         run: docker build . --file Dockerfile --tag $IMAGE_NAME
