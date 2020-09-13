@@ -4,7 +4,7 @@ on:
   push:
     # Publish `develop` as Docker `latest` image.
     branches:
-      - "*"
+      - "develop"
 
     # Publish `v1.2.3` tags as releases.
     tags:
@@ -39,7 +39,7 @@ jobs:
     needs: test
 
     runs-on: ubuntu-20.04
-    if: github.event_name == 'push' && (github.ref == 'refs/heads/develop' || startsWith(github.ref, 'refs/tags/') )
+    if: github.event_name == 'push'
 
     steps:
       - uses: actions/checkout@v2
