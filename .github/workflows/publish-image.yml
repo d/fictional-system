@@ -41,7 +41,7 @@ jobs:
           target: test
           cache-to: type=local,dest=/tmp/.buildx-cache
           cache-from: type=local,src=/tmp/.buildx-cache
-          tags: $IMAGE_NAME
+          tags: ${{ env.IMAGE_NAME }}
 
   # Push image to GitHub Packages.
   # See also https://docs.docker.com/docker-hub/builds/
@@ -69,7 +69,7 @@ jobs:
           push: false
           cache-to: type=local,dest=/tmp/.buildx-cache
           cache-from: type=local,src=/tmp/.buildx-cache
-          tags: $IMAGE_NAME
+          tags: ${{ env.IMAGE_NAME }}
 
 
       - name: Log into registry in GitHub packages
