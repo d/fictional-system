@@ -63,22 +63,14 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
 
-      - name: Build image
-        uses: docker/build-push-action@v2
-        with:
-          push: false
-          cache-to: type=local,dest=/tmp/.buildx-cache
-          cache-from: type=local,src=/tmp/.buildx-cache
-          tags: ${{ env.IMAGE_NAME }}
-
-
       - name: Log into registry in GitHub packages
         uses: docker/login-action@v1
         with:
           username: ${{ github.actor }}
           password: ${{ secrets.CR_PAT }}
 
-      - name: Push image to GitHub packages
+      - name: Compute Image Tag
+        id: tagging
         run: |
           IMAGE_ID=docker.pkg.github.com/${{ github.repository }}/$IMAGE_NAME
 
@@ -94,8 +86,14 @@ jobs:
           # Use Docker `latest` tag convention
           [ "$VERSION" == "develop" ] && VERSION=latest
 
-          echo IMAGE_ID=$IMAGE_ID
-          echo VERSION=$VERSION
+          echo ::set-output name=image_id::${IMAGE_ID}
+          echo ::set-output name=version::${VERSION}
 
-          docker tag $IMAGE_NAME $IMAGE_ID:$VERSION
-          docker push $IMAGE_ID:$VERSION
+      - name: Push image
+        uses: docker/build-push-action@v2
+        with:
+          push: true
+          cache-to: type=local,dest=/tmp/.buildx-cache
+          cache-from: type=local,src=/tmp/.buildx-cache
+          tags: ${{ steps.tagging.outputs.image_id }}:${{ steps.tagging.outputs.version }}
+
