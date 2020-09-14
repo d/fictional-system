@@ -41,7 +41,7 @@ jobs:
           target: test
           cache-to: type=local,dest=/tmp/.buildx-cache
           cache-from: |
-            ${{ steps.tagging.outputs.image_id }}:test
+            docker.pkg.github.com/${{ github.repository }}/${{ env.IMAGE_NAME}}:test
             type=local,src=/tmp/.buildx-cache
           tags: ${{ env.IMAGE_NAME }}
 
