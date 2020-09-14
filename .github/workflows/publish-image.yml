@@ -40,7 +40,9 @@ jobs:
           push: false
           target: test
           cache-to: type=local,dest=/tmp/.buildx-cache
-          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-from: |
+            ${{ steps.tagging.outputs.image_id }}:test
+            type=local,src=/tmp/.buildx-cache
           tags: ${{ env.IMAGE_NAME }}
 
   # Push image to GitHub Packages.
@@ -96,7 +98,9 @@ jobs:
         with:
           push: true
           cache-to: type=local,dest=/tmp/.buildx-cache
-          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-from: |
+            ${{ steps.tagging.outputs.image_id }}:test
+            type=local,src=/tmp/.buildx-cache
           # tags: ${{ steps.tagging.outputs.image_id }}:${{ steps.tagging.outputs.version }}
           tags: ${{ steps.tagging.outputs.image_id }}:test
 
